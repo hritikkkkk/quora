@@ -2,10 +2,14 @@ package com.quora.quora.service;
 
 import com.quora.quora.DTO.UserDTO;
 import com.quora.quora.exception.DuplicateResourceException;
+import com.quora.quora.exception.ResourceNotFoundException;
 import com.quora.quora.models.User;
 import com.quora.quora.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +30,14 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setBio(userDTO.getBio());
         return userRepository.save(user);
+    }
+
+    public User getUserById(UUID userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }
