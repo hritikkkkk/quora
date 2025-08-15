@@ -19,16 +19,20 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User createUser(UserDTO userDTO) {
-        User user = new User();
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw new DuplicateResourceException("Username already exists: " + user.getUsername());
+
+
+        if (userRepository.existsByUsername(userDTO.getUsername())) {
+            throw new DuplicateResourceException("Username already exists: " + userDTO.getUsername());
         }
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new DuplicateResourceException("Email already exists: " + user.getEmail());
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new DuplicateResourceException("Email already exists: " + userDTO.getEmail());
         }
-        user.setUsername(userDTO.getUsername());
-        user.setEmail(userDTO.getEmail());
-        user.setBio(userDTO.getBio());
+        User user = User.builder()
+                .username(userDTO.getUsername())
+                .email(userDTO.getEmail())
+                .bio(userDTO.getBio())
+                .build();
+
         return userRepository.save(user);
     }
 
