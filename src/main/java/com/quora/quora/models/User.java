@@ -1,8 +1,6 @@
 package com.quora.quora.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.UUID;
@@ -19,12 +17,11 @@ public class User {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @NotBlank(message = "Username is required")
+
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email is required")
+
     @Column(unique = true, nullable = false)
     private String email;
 

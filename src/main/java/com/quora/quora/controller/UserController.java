@@ -36,4 +36,21 @@ public class UserController {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(
+            @PathVariable UUID id,
+            @Valid @RequestBody UserDTO userDTO) {
+
+        User updatedUser = userService.updateUser(id, userDTO);
+
+
+        UserDTO response = UserDTO.builder()
+                .username(updatedUser.getUsername())
+                .email(updatedUser.getEmail())
+                .bio(updatedUser.getBio())
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
 }

@@ -5,6 +5,8 @@ import com.quora.quora.exception.DuplicateResourceException;
 import com.quora.quora.exception.ResourceNotFoundException;
 import com.quora.quora.models.User;
 import com.quora.quora.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,4 +46,26 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public User updateUser(UUID userId, @Valid UserDTO dto) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+
+        if (!existingUser.getUsername().equals(dto.getUsername()) &&
+                userRepository.existsByUsername(dto.getUsername())) {
+            throw new DuplicateResourceException("Username already exists: " + dto.getUsername());
+        }
+
+        if (!existingUser.getEmail().equals(dto.getEmail()) &&
+                userRepository.existsByEmail(dto.getEmail())) {
+            throw new DuplicateResourceException("Email already exists: " + dto.getEmail());
+        }
+        existingUser.setUsername(dto.getUsername());
+        existingUser.setEmail(dto.getEmail());
+        existingUser.setBio(dto.getBio());
+
+        return userRepository.save(existingUser);
+    }
+
+
 }
