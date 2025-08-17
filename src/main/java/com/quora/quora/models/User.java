@@ -1,8 +1,11 @@
 package com.quora.quora.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -11,6 +14,8 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @Builder
+@Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,4 +32,8 @@ public class User {
 
     @Column(columnDefinition = "TEXT")
     private String bio;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("user")
+    private Set<Question> questions = new HashSet<>();
 }

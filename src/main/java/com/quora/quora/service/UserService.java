@@ -67,5 +67,10 @@ public class UserService {
         return userRepository.save(existingUser);
     }
 
+    public void deleteUser(UUID userId) {
+        User user = getUserById(userId);
+        userRepository.delete(user);
+    }
+
 
 }
