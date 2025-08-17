@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -16,13 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "questions")
-public class Question {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
-
+public class Question extends BaseModel {
     @Column(nullable = false)
     private String title;
 
@@ -38,4 +34,13 @@ public class Question {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnoreProperties({"questions"})
     private User user;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "question_topics",
+            joinColumns = @JoinColumn(name = "question_id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id")
+    )
+    @JsonIgnoreProperties("questions")
+    private Set<Topic> topics = new HashSet<>();
 }

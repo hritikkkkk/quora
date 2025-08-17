@@ -13,18 +13,14 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final UserService userService;
 
-    public Question createQuestion(QuestionDto questionCreateDto) {
-        User user = userService.getUserById(questionCreateDto.getUserId());
+    public Question createQuestion(QuestionDto questionDto) {
+        User user = userService.getUserById(questionDto.getUserId());
 
         Question question = Question.builder()
-                .title(questionCreateDto.getTitle())
-                .body(questionCreateDto.getBody())
+                .title(questionDto.getTitle())
+                .body(questionDto.getBody())
                 .user(user)
                 .build();
-
-
-
-
         return questionRepository.save(question);
     }
 

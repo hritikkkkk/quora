@@ -16,13 +16,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "users")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
-
-
+public class User extends BaseModel {
     @Column(unique = true, nullable = false)
     private String username;
 
