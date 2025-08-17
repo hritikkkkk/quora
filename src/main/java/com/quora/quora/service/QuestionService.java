@@ -2,16 +2,21 @@ package com.quora.quora.service;
 
 import com.quora.quora.DTO.QuestionDto;
 import com.quora.quora.models.Question;
+import com.quora.quora.models.Topic;
 import com.quora.quora.models.User;
 import com.quora.quora.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final UserService userService;
+    private final TopicService topicService;
 
     public Question createQuestion(QuestionDto questionDto) {
         User user = userService.getUserById(questionDto.getUserId());
@@ -21,6 +26,17 @@ public class QuestionService {
                 .body(questionDto.getBody())
                 .user(user)
                 .build();
+
+        if (questionDto.getTopicTags() != null && !questionDto.getTopicTags().isEmpty()) {
+            Set<Topic> topics = new HashSet<>();
+            for (String topicName : questionDto.getTopicTags()) {
+                Topic topic = topicService.findOrCreateTopic(topicName);
+                topics.add(topic);
+            }
+            question.setTopics(topics);
+        }
+
+
         return questionRepository.save(question);
     }
 
