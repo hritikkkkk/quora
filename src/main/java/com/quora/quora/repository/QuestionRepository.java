@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, UUID> {
+    List<Question> findByUserId(UUID uuid);
 
     @Query("SELECT q FROM Question q ORDER BY q.createdAt DESC")
     List<Question> findAllOrderByCreatedAtDesc();

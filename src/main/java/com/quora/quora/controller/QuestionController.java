@@ -57,4 +57,13 @@ public class QuestionController {
         questionService.deleteQuestion(questionId);
         return ResponseEntity.noContent().build();
     }
+
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Question>> getQuestionsByUserId(@PathVariable UUID userId) {
+        List<Question> question = questionService.getQuestionsByUserId(userId);
+        return ResponseEntity.ok(question);
+    }
+
+
 }

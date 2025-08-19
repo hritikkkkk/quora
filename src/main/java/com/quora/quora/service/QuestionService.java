@@ -75,4 +75,8 @@ public class QuestionService {
         questionRepository.delete(question);
     }
 
+    public List<Question> getQuestionsByUserId(UUID userId) {
+        return questionRepository.findByUserId(userId);
+    }
+
 }
