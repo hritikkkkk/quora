@@ -28,4 +28,12 @@ public class QuestionController {
         Question createdQuestion = questionService.createQuestion(questionDto);
         return new ResponseEntity<>(createdQuestion, HttpStatus.CREATED);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Question>> searchQuestions(
+            @RequestParam(required = false) String text,
+            @RequestParam(required = false) String tag) {
+        List<Question> questions = questionService.searchQuestions(text, tag);
+        return ResponseEntity.ok(questions);
+    }
 }

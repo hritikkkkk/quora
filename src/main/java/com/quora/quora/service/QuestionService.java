@@ -45,5 +45,11 @@ public class QuestionService {
         return questionRepository.findAllOrderByCreatedAtDesc();
     }
 
+    public List<Question> searchQuestions(String text, String tag) {
+        return questionRepository.searchQuestions(text, tag);
+    }
+
+
+
 
 }
