@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/questions")
@@ -35,5 +36,25 @@ public class QuestionController {
             @RequestParam(required = false) String tag) {
         List<Question> questions = questionService.searchQuestions(text, tag);
         return ResponseEntity.ok(questions);
+    }
+
+    @GetMapping("/{questionId}")
+    public ResponseEntity<Question> getQuestionById(@PathVariable UUID questionId) {
+        Question question = questionService.getQuestionById(questionId);
+        return ResponseEntity.ok(question);
+    }
+
+    @PutMapping("/{questionId}")
+    public ResponseEntity<Question> updateQuestion(
+            @PathVariable UUID questionId,
+            @RequestBody Question questionUpdate) {
+        Question updatedQuestion = questionService.updateQuestion(questionId, questionUpdate);
+        return ResponseEntity.ok(updatedQuestion);
+    }
+
+    @DeleteMapping("/{questionId}")
+    public ResponseEntity<Void> deleteQuestion(@PathVariable UUID questionId) {
+        questionService.deleteQuestion(questionId);
+        return ResponseEntity.noContent().build();
     }
 }

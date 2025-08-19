@@ -1,6 +1,7 @@
 package com.quora.quora.service;
 
 import com.quora.quora.DTO.QuestionDto;
+import com.quora.quora.exception.ResourceNotFoundException;
 import com.quora.quora.models.Question;
 import com.quora.quora.models.Topic;
 import com.quora.quora.models.User;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +51,28 @@ public class QuestionService {
         return questionRepository.searchQuestions(text, tag);
     }
 
+    public Question getQuestionById(UUID questionId) {
+        return questionRepository.findById(questionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Question not found with id: " + questionId));
+    }
 
+    public Question updateQuestion(UUID questionId, Question questionUpdate) {
+        Question existingQuestion = getQuestionById(questionId);
 
+        if (questionUpdate.getTitle() != null) {
+            existingQuestion.setTitle(questionUpdate.getTitle());
+        }
+
+        if (questionUpdate.getBody() != null) {
+            existingQuestion.setBody(questionUpdate.getBody());
+        }
+
+        return questionRepository.save(existingQuestion);
+    }
+
+    public void deleteQuestion(UUID questionId) {
+        Question question = getQuestionById(questionId);
+        questionRepository.delete(question);
+    }
 
 }
