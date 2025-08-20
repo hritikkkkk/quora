@@ -34,4 +34,20 @@ public class User extends BaseModel {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("user")
     private Set<Answer> answers = new HashSet<>();
+
+    // Following relationship
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "user_follows",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "following_id")
+    )
+    @JsonIgnoreProperties({"followers", "following"})
+    private Set<User> following = new HashSet<>();
+
+    @ManyToMany(mappedBy = "following")
+    @JsonIgnoreProperties({"followers", "following"})
+    private Set<User> followers = new HashSet<>();
+
+
 }
