@@ -65,5 +65,11 @@ public class QuestionController {
         return ResponseEntity.ok(question);
     }
 
+    @GetMapping("/topic/{topicName}")
+    public ResponseEntity<List<Question>> getQuestionsByTopic(@PathVariable String topicName) {
+        List<Question> questions = questionService.getQuestionsByTopic(topicName);
+        return ResponseEntity.ok(questions);
+    }
+
 
 }

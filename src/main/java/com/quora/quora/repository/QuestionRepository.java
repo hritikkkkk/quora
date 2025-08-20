@@ -22,5 +22,8 @@ public interface QuestionRepository extends JpaRepository<Question, UUID> {
             "(:tag IS NULL OR EXISTS (SELECT t FROM q.topics t WHERE LOWER(t.name) LIKE LOWER(CONCAT('%', :tag, '%'))))")
     List<Question> searchQuestions(@Param("text") String text, @Param("tag") String tag);
 
+    @Query("SELECT q FROM Question q JOIN q.topics t WHERE t.name = :topicName")
+    List<Question> findByTopicName(@Param("topicName") String topicName);
+
 
 }

@@ -79,4 +79,8 @@ public class QuestionService {
         return questionRepository.findByUserId(userId);
     }
 
+    public List<Question> getQuestionsByTopic(String topicName) {
+        return questionRepository.findByTopicName(topicName);
+    }
+
 }
