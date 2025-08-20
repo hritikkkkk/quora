@@ -25,9 +25,30 @@ public class AnswerController {
         Answer createdAnswer = answerService.createAnswer(questionId, answerCreateDto);
         return new ResponseEntity<>(createdAnswer, HttpStatus.CREATED);
     }
+
     @GetMapping("/{questionId}/answers")
     public ResponseEntity<List<Answer>> getAnswersByQuestion(@PathVariable UUID questionId) {
         List<Answer> answers = answerService.getAnswersByQuestionId(questionId);
         return ResponseEntity.ok(answers);
+    }
+
+    @GetMapping("/answers/{answerId}")
+    public ResponseEntity<Answer> getAnswerById(@PathVariable UUID answerId) {
+        Answer answer = answerService.getAnswerById(answerId);
+        return ResponseEntity.ok(answer);
+    }
+
+    @PutMapping("/answers/{answerId}")
+    public ResponseEntity<Answer> updateAnswer(
+            @PathVariable UUID answerId,
+            @Valid @RequestBody AnswerDto answerCreateDto) {
+        Answer answer = answerService.updateAnswer(answerId, answerCreateDto);
+        return ResponseEntity.ok(answer);
+    }
+
+    @DeleteMapping("/answers/{answerId}")
+    public ResponseEntity<Void> deleteAnswer(@PathVariable UUID answerId){
+        answerService.deleteAnswer(answerId);
+        return ResponseEntity.noContent().build();
     }
 }

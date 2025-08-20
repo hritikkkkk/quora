@@ -1,6 +1,7 @@
 package com.quora.quora.service;
 
 import com.quora.quora.DTO.AnswerDto;
+import com.quora.quora.exception.ResourceNotFoundException;
 import com.quora.quora.models.Answer;
 import com.quora.quora.models.Question;
 import com.quora.quora.models.User;
@@ -33,6 +34,27 @@ public class AnswerService {
 
     public List<Answer> getAnswersByQuestionId(UUID questionId) {
         return answerRepository.findByQuestionIdOrderByCreatedAtDesc(questionId);
+    }
+
+    public Answer getAnswerById(UUID answerId) {
+        return answerRepository.findById(answerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Answer not found with id: " + answerId));
+    }
+
+    public Answer updateAnswer(UUID questionId, AnswerDto answerUpdateDto) {
+        Answer existingAnswer = getAnswerById(questionId);
+        if (answerUpdateDto.getText() != null) {
+            existingAnswer.setText(answerUpdateDto.getText());
+        }
+
+
+        return answerRepository.save(existingAnswer);
+    }
+
+    public void deleteAnswer(UUID answerId) {
+        Answer answer = getAnswerById(answerId);
+        answerRepository.delete(answer);
+
     }
 
 
