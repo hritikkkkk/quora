@@ -18,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "questions")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Question extends BaseModel {
     @Column(nullable = false)
     private String title;
@@ -32,7 +33,7 @@ public class Question extends BaseModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"questions"})
+    @JsonIgnoreProperties({"questions", "answers"})
     private User user;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -43,4 +44,8 @@ public class Question extends BaseModel {
     )
     @JsonIgnoreProperties("questions")
     private Set<Topic> topics = new HashSet<>();
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("question")
+    private Set<Answer> answers = new HashSet<>();
 }

@@ -21,6 +21,6 @@ public class Topic extends BaseModel {
     private String name;
 
     @ManyToMany(mappedBy = "topics")
-    @JsonIgnoreProperties({"topics"})
+    @JsonIgnoreProperties({"topics", "questions"})
     private Set<Question> questions = new HashSet<>();
 }
