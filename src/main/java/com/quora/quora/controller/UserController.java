@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -58,5 +59,14 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{userId}/follow/{targetUserId}")
+    public ResponseEntity<Map<String, String>> followUser(
+            @PathVariable UUID userId,
+            @PathVariable UUID targetUserId) {
+        userService.followUser(userId, targetUserId);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "User followed successfully"));
     }
 }

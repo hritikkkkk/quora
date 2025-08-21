@@ -2,10 +2,10 @@ package com.quora.quora.service;
 
 import com.quora.quora.DTO.UserDTO;
 import com.quora.quora.exception.DuplicateResourceException;
+import com.quora.quora.exception.GlobalExceptionHandler;
 import com.quora.quora.exception.ResourceNotFoundException;
 import com.quora.quora.models.User;
 import com.quora.quora.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -70,6 +70,18 @@ public class UserService {
     public void deleteUser(UUID userId) {
         User user = getUserById(userId);
         userRepository.delete(user);
+    }
+
+    public void followUser(UUID userId, UUID targetUserId) {
+        if (userId.equals(targetUserId)) {
+            throw new IllegalArgumentException("User cannot follow themselves");
+        }
+
+        User user = getUserById(userId);
+        User targetUser = getUserById(targetUserId);
+
+        user.getFollowing().add(targetUser);
+        userRepository.save(user);
     }
 
 
