@@ -80,6 +80,10 @@ public class UserService {
         User user = getUserById(userId);
         User targetUser = getUserById(targetUserId);
 
+        if (user.getFollowing().contains(targetUser)) {
+            throw new DuplicateResourceException("User is already following this user");
+        }
+
         user.getFollowing().add(targetUser);
         userRepository.save(user);
     }
