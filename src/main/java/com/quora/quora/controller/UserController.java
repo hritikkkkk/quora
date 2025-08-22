@@ -91,4 +91,10 @@ public class UserController {
         return ResponseEntity.ok(following);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUsers(@RequestParam(required = false) String username) {
+        List<User> users = userService.searchUsers(username);
+        return ResponseEntity.ok(users);
+    }
+
 }

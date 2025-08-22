@@ -109,4 +109,12 @@ public class UserService {
         return new ArrayList<>(user.getFollowing());
     }
 
+    public List<User> searchUsers(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            return getAllUsers();
+        }
+        return userRepository.findByUsernameContainingIgnoreCase(username);
+    }
+
+
 }
