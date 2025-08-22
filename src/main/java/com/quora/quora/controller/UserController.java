@@ -78,4 +78,17 @@ public class UserController {
         userService.unfollowUser(userId, targetUserId);
         return ResponseEntity.ok(Map.of("message", "User unfollowed successfully"));
     }
+
+    @GetMapping("/{userId}/followers")
+    public ResponseEntity<List<User>> getFollowers(@PathVariable UUID userId) {
+        List<User> followers = userService.getFollowers(userId);
+        return ResponseEntity.ok(followers);
+    }
+
+    @GetMapping("/{userId}/following")
+    public ResponseEntity<List<User>> getFollowing(@PathVariable UUID userId) {
+        List<User> following = userService.getFollowing(userId);
+        return ResponseEntity.ok(following);
+    }
+
 }

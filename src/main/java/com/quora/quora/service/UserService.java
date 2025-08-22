@@ -10,7 +10,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -97,5 +99,14 @@ public class UserService {
 
     }
 
+    public List<User> getFollowers(UUID userId) {
+        User user = getUserById(userId);
+        return new ArrayList<>(user.getFollowers());
+    }
+
+    public List<User> getFollowing(UUID userId) {
+        User user = getUserById(userId);
+        return new ArrayList<>(user.getFollowing());
+    }
 
 }
