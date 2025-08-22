@@ -33,7 +33,7 @@ public class Question extends BaseModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"questions", "answers"})
+    @JsonIgnoreProperties({"questions", "answers", "comments", "followers", "following"})
     private User user;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
