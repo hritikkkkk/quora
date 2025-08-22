@@ -88,5 +88,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void unfollowUser(UUID userId, UUID targetUserId) {
+        User user = getUserById(userId);
+        User targetUser = getUserById(targetUserId);
+
+        user.getFollowing().remove(targetUser);
+        userRepository.save(user);
+
+    }
+
 
 }

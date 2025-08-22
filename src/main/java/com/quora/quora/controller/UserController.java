@@ -69,4 +69,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("message", "User followed successfully"));
     }
+
+
+    @DeleteMapping("/{userId}/follow/{targetUserId}")
+    public ResponseEntity<Map<String, String>> unfollowUser(
+            @PathVariable UUID userId,
+            @PathVariable UUID targetUserId) {
+        userService.unfollowUser(userId, targetUserId);
+        return ResponseEntity.ok(Map.of("message", "User unfollowed successfully"));
+    }
 }
