@@ -36,4 +36,24 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    public Comment createCommentOnComment(UUID commentId, CommentDto commentDto) {
+        User user = userService.getUserById(commentDto.getUserId());
+        Comment parentComment = getCommentById(commentId);
+
+        Comment comment = Comment.builder()
+                .parentId(commentId)
+                .parentType(Comment.ParentType.COMMENT)
+                .text(commentDto.getText())
+                .user(user)
+                .build();
+        return commentRepository.save(comment);
+
+
+    }
+
+    public Comment getCommentById(UUID commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id: " + commentId));
+    }
+
 }

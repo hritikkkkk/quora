@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -25,6 +22,20 @@ public class CommentController {
             @Valid @RequestBody CommentDto commentDto) {
         Comment createdComment = commentService.createCommentOnAnswer(answerId, commentDto);
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/comments/{commentId}/comments")
+    public ResponseEntity<Comment> createCommentOnComment(
+            @PathVariable UUID commentId,
+            @Valid @RequestBody CommentDto commentDto) {
+        Comment createdComment = commentService.createCommentOnComment(commentId, commentDto);
+        return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/comments/{commentId}")
+    public ResponseEntity<Comment> getCommentById(@PathVariable UUID commentId) {
+        Comment comment = commentService.getCommentById(commentId);
+        return ResponseEntity.ok(comment);
     }
 
 }
