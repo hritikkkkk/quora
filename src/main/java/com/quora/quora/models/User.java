@@ -26,7 +26,6 @@ public class User extends BaseModel {
 
     @Column(columnDefinition = "TEXT")
     private String bio;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("user")
     private Set<Question> questions = new HashSet<>();
@@ -48,6 +47,8 @@ public class User extends BaseModel {
     @ManyToMany(mappedBy = "following")
     @JsonIgnoreProperties({"followers", "following"})
     private Set<User> followers = new HashSet<>();
+
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("user")

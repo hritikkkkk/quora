@@ -37,7 +37,7 @@ public class Answer extends BaseModel {
     @JsonIgnoreProperties({"questions", "answers", "comments", "followers", "following"})
     private User user;
 
-    @OneToMany(mappedBy = "parentId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"parentId", "parentType"})
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"answer"})
     private Set<Comment> comments = new HashSet<>();
 }
