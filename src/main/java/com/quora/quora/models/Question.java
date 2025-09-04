@@ -48,4 +48,7 @@ public class Question extends BaseModel {
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("question")
     private Set<Answer> answers = new HashSet<>();
+    @OneToMany(mappedBy = "targetId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"targetId", "targetType"})
+    private Set<Like> likes = new HashSet<>();
 }

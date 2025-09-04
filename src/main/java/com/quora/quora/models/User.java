@@ -54,5 +54,9 @@ public class User extends BaseModel {
     @JsonIgnoreProperties("user")
     private Set<Comment> comments = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("user")
+    private Set<Like> likes = new HashSet<>();
+
 
 }

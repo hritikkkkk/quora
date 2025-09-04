@@ -38,4 +38,8 @@ public class Comment extends BaseModel {
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "targetId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"targetId", "targetType"})
+    private Set<Like> likes = new HashSet<>();
 }
