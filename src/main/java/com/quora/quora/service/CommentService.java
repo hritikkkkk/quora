@@ -2,6 +2,7 @@ package com.quora.quora.service;
 
 import com.quora.quora.DTO.CommentDto;
 import com.quora.quora.DTO.CommentResponseDto;
+import com.quora.quora.exception.ResourceNotFoundException;
 import com.quora.quora.models.Answer;
 import com.quora.quora.models.Comment;
 import com.quora.quora.models.User;
@@ -23,7 +24,9 @@ public class CommentService {
     private final UserService userService;
     private final AnswerService answerService;
 
-    /** Comment on an Answer */
+    /**
+     * Comment on an Answer
+     */
     public Comment addCommentOnAnswer(UUID answerId, CommentDto commentDto) {
         User user = userService.getUserById(commentDto.getUser());
         Answer answer = answerService.getAnswerById(answerId);
@@ -37,7 +40,9 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    /** Reply to another Comment */
+    /**
+     * Reply to another Comment
+     */
     public Comment addReplyToComment(UUID parentCommentId, CommentDto commentDto) {
         User user = userService.getUserById(commentDto.getUser());
         Comment parentComment = commentRepository.findById(parentCommentId)
@@ -53,7 +58,9 @@ public class CommentService {
         return commentRepository.save(reply);
     }
 
-    /** Convert Comment → Response DTO (recursive for replies) */
+    /**
+     * Convert Comment → Response DTO (recursive for replies)
+     */
     public CommentResponseDto toResponseDto(Comment comment) {
         return CommentResponseDto.builder()
                 .id(comment.getId())
@@ -67,5 +74,10 @@ public class CommentService {
                         .collect(Collectors.toList())
                         : null)
                 .build();
+    }
+
+    public Comment getCommentById(UUID commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id: " + commentId));
     }
 }
