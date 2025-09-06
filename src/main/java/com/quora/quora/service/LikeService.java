@@ -1,12 +1,14 @@
 package com.quora.quora.service;
 
 import com.quora.quora.exception.DuplicateResourceException;
+import com.quora.quora.exception.ResourceNotFoundException;
 import com.quora.quora.models.Like;
 import com.quora.quora.models.User;
 import com.quora.quora.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -49,6 +51,18 @@ public class LikeService {
             case "comments" -> Like.TargetType.COMMENT;
             default -> throw new IllegalArgumentException("Invalid target type: " + type);
         };
+    }
+
+    public void unlikeContent(String type, UUID targetId, UUID userId) {
+        Like.TargetType targetType = parseTargetType(type);
+
+        Optional<Like> existingLike = likeRepository.findByUserIdAndTargetIdAndTargetType(userId, targetId, targetType);
+
+        if (existingLike.isEmpty()) {
+            throw new ResourceNotFoundException("Like not found for user " + userId + " on " + type + " " + targetId);
+        }
+
+        likeRepository.delete(existingLike.get());
     }
 
 }

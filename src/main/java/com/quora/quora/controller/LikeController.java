@@ -6,14 +6,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.Map;
 import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 public class LikeController {
@@ -27,6 +25,15 @@ public class LikeController {
         likeService.likeContent(type, id, likeCreateDto.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("message", "Content liked successfully"));
+    }
+
+    @DeleteMapping("/{type}/{id}/likes")
+    public ResponseEntity<Map<String, String>> unlikeContent(
+            @PathVariable String type,
+            @PathVariable UUID id,
+            @RequestParam UUID userId) {
+        likeService.unlikeContent(type, id, userId);
+        return ResponseEntity.ok(Map.of("message", "Content unliked successfully"));
     }
 
 
