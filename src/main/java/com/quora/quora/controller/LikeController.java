@@ -36,5 +36,13 @@ public class LikeController {
         return ResponseEntity.ok(Map.of("message", "Content unliked successfully"));
     }
 
+    @GetMapping("/{type}/{id}/likes/count")
+    public ResponseEntity<Map<String, Long>> getLikeCount(
+            @PathVariable String type,
+            @PathVariable UUID id) {
+        long count = likeService.getLikeCount(type, id);
+        return ResponseEntity.ok(Map.of("count", count));
+    }
+
 
 }

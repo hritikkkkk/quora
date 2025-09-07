@@ -65,4 +65,8 @@ public class LikeService {
         likeRepository.delete(existingLike.get());
     }
 
+    public long getLikeCount(String type, UUID targetId) {
+        Like.TargetType targetType = parseTargetType(type);
+        return likeRepository.countByTargetIdAndTargetType(targetId, targetType);
+    }
 }
