@@ -1,5 +1,6 @@
 package com.quora.quora.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +24,12 @@ public class User extends BaseModel {
 
     @Column(unique = true, nullable = false)
     private String email;
+
+
+    @JsonIgnore
+    @Column(nullable = false)
+    private String password;
+
 
     @Column(columnDefinition = "TEXT")
     private String bio;

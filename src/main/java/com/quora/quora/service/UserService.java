@@ -8,6 +8,7 @@ import com.quora.quora.models.User;
 import com.quora.quora.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User createUser(UserDTO userDTO) {
 
@@ -35,6 +37,7 @@ public class UserService {
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
                 .bio(userDTO.getBio())
+                .password(passwordEncoder.encode(userDTO.getPassword()))
                 .build();
 
         return userRepository.save(user);
