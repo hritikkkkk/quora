@@ -2,6 +2,7 @@ package com.quora.quora.controller;
 
 import com.quora.quora.DTO.UserDTO;
 import com.quora.quora.models.User;
+import com.quora.quora.projections.UserProjection;
 import com.quora.quora.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserProjection>> getAllUsers() {
+        List<UserProjection> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 

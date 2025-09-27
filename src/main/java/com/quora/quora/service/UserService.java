@@ -5,6 +5,7 @@ import com.quora.quora.exception.DuplicateResourceException;
 import com.quora.quora.exception.GlobalExceptionHandler;
 import com.quora.quora.exception.ResourceNotFoundException;
 import com.quora.quora.models.User;
+import com.quora.quora.projections.UserProjection;
 import com.quora.quora.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +49,8 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserProjection> getAllUsers() {
+        return userRepository.findAllProjectedBy();
     }
 
     public User updateUser(UUID userId, @Valid UserDTO dto) {
@@ -113,9 +114,6 @@ public class UserService {
     }
 
     public List<User> searchUsers(String username) {
-        if (username == null || username.trim().isEmpty()) {
-            return getAllUsers();
-        }
         return userRepository.findByUsernameContainingIgnoreCase(username);
     }
 

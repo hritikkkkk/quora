@@ -1,6 +1,7 @@
 package com.quora.quora.repository;
 
 import com.quora.quora.models.User;
+import com.quora.quora.projections.UserProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByEmail(String email);
 
     List<User> findByUsernameContainingIgnoreCase(String username);
+
+    List<UserProjection> findAllProjectedBy();
 }
